@@ -32,7 +32,7 @@ open-LocalModel provides a web-based chat interface for running various Hugging 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/open-LocalModel.git
+git clone https://github.com/llaa33219/open-LockalModel.git
 cd open-LocalModel
 ```
 
