@@ -1,0 +1,20 @@
+# Core Dependencies
+transformers>=4.35.0
+torch>=2.0.0
+flask>=2.3.0
+huggingface_hub>=0.17.0
+
+# Optional Dependencies for Enhanced Features
+bitsandbytes>=0.41.0        # For model quantization (GPU required)
+accelerate>=0.24.0          # For distributed/mixed precision training
+safetensors>=0.4.0          # Safe tensor format support
+
+# Additional Dependencies
+numpy>=1.24.0
+requests>=2.31.0
+tqdm>=4.65.0
+
+# Development Dependencies (optional)
+# pytest>=7.4.0
+# black>=23.0.0
+# flake8>=6.0.0 

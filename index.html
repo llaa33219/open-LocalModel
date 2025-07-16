@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>open-LocalModel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.6/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="responsive_additions.css">
+    <link rel="stylesheet" href="design_improvements.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.2.12/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 앱 헤더 -->
+        <header class="app-header">
+            <div class="app-logo">
+                <i class="fas fa-robot"></i>
+                <span>open-LocalModel</span>
+            </div>
+            <div class="model-selection">
+                <select id="modelSelect" class="model-select">
+                    <option value="">모델을 선택하세요</option>
+                </select>
+                <button id="installModelBtn" class="header-button" title="모델 설치">
+                    <i class="fas fa-download"></i>
+                </button>
+                <button id="removeModelBtn" class="header-button" title="모델 제거">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <div class="app-actions">
+                <button id="settingsBtn" class="header-button" title="설정">
+                    <i class="fas fa-cog"></i>
+                    <span>설정</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- 채팅 섹션 -->
+        <section id="chatSection" class="chat-section">
+            <div class="chat-header">
+                <div class="chat-title">채팅 기록</div>
+                <div class="chat-actions">
+                    <button id="newChatBtn" class="chat-button" title="새 채팅">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button id="deleteChatBtn" class="chat-button" title="채팅 삭제">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div id="chatHistory" class="chat-history">
+                <!-- 채팅 기록이 여기에 표시됩니다 -->
+            </div>
+        </section>
+        
+        <!-- 채팅 섹션 토글 버튼 -->
+        <button id="toggleChatBtn" class="toggle-chat-btn">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="main-content">
+            <div id="messages" class="messages-container">
+                <!-- 메시지가 여기에 표시됩니다 -->
+            </div>
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea id="userInput" placeholder="메시지를 입력하세요..."></textarea>
+                    <div id="thinkingIndicator" class="thinking-indicator">
+                        <div class="loading-animation">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <button id="sendBtn" class="send-btn" title="메시지 보내기">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="think-button-container">
+                <button id="thinkBtn" class="think-btn" title="추론 과정 표시 설정">
+                    <i class="fas fa-brain"></i>
+                    <span>Think</span>
+                </button>
+            </div>
+        </main>
+
+        <!-- 설정 섹션 -->
+        <section id="settingsSection" class="settings-section">
+            <div class="settings-header">
+                <div class="settings-title">설정</div>
+                <button id="closeSettingsBtn" class="close-settings-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="settings-content">
+                <!-- 생성 설정 -->
+                <div class="settings-group">
+                    <div class="settings-group-title">
+                        <i class="fas fa-sliders-h"></i> 생성 설정
+                    </div>
+                    <div class="form-group">
+                        <label for="maxInputTokens">최대 입력 토큰 수</label>
+                        <input type="number" id="maxInputTokens" class="form-control" min="1" max="8192" value="4096">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxOutputTokens">최대 출력 토큰 수</label>
+                        <input type="number" id="maxOutputTokens" class="form-control" min="1" max="4096" value="2048">
+                    </div>
+                    <div class="form-group">
+                        <label for="maxTotalTokens">최대 총 토큰 수</label>
+                        <input type="number" id="maxTotalTokens" class="form-control" min="1" max="8192" value="8192">
+                    </div>
+                    <div class="form-group">
+                        <label for="temperature">Temperature</label>
+                        <div class="slider-container">
+                            <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.7">
+                            <span id="temperatureValue" class="slider-value">0.7</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="topP">Top P</label>
+                        <div class="slider-container">
+                            <input type="range" id="topP" min="0" max="1" step="0.05" value="0.9">
+                            <span id="topPValue" class="slider-value">0.9</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="topK">Top K</label>
+                        <input type="number" id="topK" class="form-control" min="1" max="100" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="repetitionPenalty">Repetition Penalty</label>
+                        <div class="slider-container">
+                            <input type="range" id="repetitionPenalty" min="1" max="2" step="0.1" value="1.1">
+                            <span id="repetitionPenaltyValue" class="slider-value">1.1</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="doSample">Do Sample</label>
+                        <div class="toggle-switch-container">
+                            <input type="checkbox" id="doSample" checked>
+                            <div class="toggle-switch"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="showThinking">추론 과정 표시</label>
+                        <div class="toggle-switch-container">
+                            <input type="checkbox" id="showThinking">
+                            <div class="toggle-switch"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 디바이스 설정 -->
+                <div class="settings-group">
+                    <div class="settings-group-title">
+                        <i class="fas fa-laptop"></i> 디바이스 설정
+                    </div>
+                    <div class="form-group">
+                        <label>디바이스 타입</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="deviceGPU" name="deviceType" checked>
+                                <label for="deviceGPU">GPU</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="deviceCPU" name="deviceType">
+                                <label for="deviceCPU">CPU</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="useQuantization">양자화 사용</label>
+                        <div class="toggle-switch-container">
+                            <input type="checkbox" id="useQuantization" checked>
+                            <div class="toggle-switch"></div>
+                        </div>
+                    </div>
+                    <div id="quantizationOptionsDiv" class="form-group">
+                        <label for="quantizationBits">양자화 비트</label>
+                        <select id="quantizationBits" class="form-control">
+                            <option value="8">8-bit</option>
+                            <option value="4">4-bit</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 템플릿 설정 -->
+                <div class="settings-group">
+                    <div class="settings-group-title">
+                        <i class="fas fa-save"></i> 템플릿 설정
+                    </div>
+                    <div class="form-group">
+                        <label for="templateSelect">템플릿 로드</label>
+                        <div class="settings-actions">
+                            <select id="templateSelect" class="form-control">
+                                <option value="">템플릿 선택</option>
+                            </select>
+                            <button id="loadTemplateBtn" class="settings-btn secondary-btn">
+                                <i class="fas fa-download"></i> 로드
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="templateName">템플릿 저장</label>
+                        <div class="settings-actions">
+                            <input type="text" id="templateName" class="form-control" placeholder="템플릿 이름">
+                            <button id="saveTemplateBtn" class="settings-btn primary-btn">
+                                <i class="fas fa-save"></i> 저장
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 설정 초기화 -->
+                <div class="settings-actions">
+                    <button id="resetSettingsBtn" class="settings-btn secondary-btn">
+                        <i class="fas fa-undo"></i> 기본값으로 초기화
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 모델 설치 모달 -->
+        <div id="installModelModal" class="modal model-install-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-download"></i> 모델 설치</h2>
+                    <span id="closeModelModal" class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="model-search">
+                        <input type="text" id="modelSearchInput" class="form-control" placeholder="모델 검색...">
+                        <button id="searchModelBtn" class="model-search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="model-search-options">
+                        <input type="text" id="modelAuthorInput" class="form-control" placeholder="제작자...">
+                        <select id="modelSortBy" class="form-control">
+                            <option value="downloads">다운로드순</option>
+                            <option value="recent">최신순</option>
+                        </select>
+                    </div>
+                    <div id="availableModelList" class="available-model-list">
+                        <!-- 사용 가능한 모델 목록이 여기에 표시됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
